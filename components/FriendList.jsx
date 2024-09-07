@@ -2,6 +2,7 @@
 import React from 'react';
 import DynamicCard from './DynamicCard';
 import DynamicEmptyState from './DynamicEmptyState';
+import FriendCard from './FriendCard';
 
 export default function FriendList() {
 	const friendIcons = [
@@ -49,19 +50,27 @@ export default function FriendList() {
 		{ name: 'name' },
 	];
 	return (
-		<div className="flex flex-col h-full overflow-hidden">
-			<DynamicCard title="Friends" icons={friendIcons} component={components} showSearchBar />
-			<div className="overflow-y-scroll scrollbar-none mt-2 h-full">
-				{friendList?.length > 100 ? (
-					friendList.map((el) => (
-						<div key={el.name} className="p-2">
-							{el.name}
-						</div>
-					))
-				) : (
-					<DynamicEmptyState title="No friends to chat" subTitle="Try adding new friends" />
-				)}
-			</div>
-		</div>
-	);
+    <div className="flex flex-col h-full overflow-hidden min-w-80 w-full">
+      <DynamicCard
+        title="Friends"
+        icons={friendIcons}
+        component={components}
+        showSearchBar
+      />
+      <div className="overflow-y-scroll scrollbar-none mt-2 h-full flex flex-col gap-2">
+        {friendList?.length > 0 ? (
+          friendList.map((el) => (
+            <div key={el.name} className="">
+              <FriendCard />
+            </div>
+          ))
+        ) : (
+          <DynamicEmptyState
+            title="No friends to chat"
+            subTitle="Try adding new friends"
+          />
+        )}
+      </div>
+    </div>
+  );
 }
