@@ -1,38 +1,17 @@
-'use client'
-import React from 'react';
+"use client";
+import React from "react";
 
-const Left = ({ children, className }) => {
-    return (
-        <div className={className}>
-            {children}
-        </div>
-    );
+const Column = ({ children, className }) => {
+  return <div className={`flex flex-col ${className}`}>{children}</div>;
 };
 
-const Middle = ({ children, className }) => {
-    return (
-        <div className={className}>
-            {children}
-        </div>
-    );
-};
-
-const Right = ({ children, className }) => {
-    return (
-        <div className={className}>
-            {children}
-        </div>
-    );
+const Row = ({ children, className }) => {
+  return <div className={`flex flex-row ${className}`}>{children}</div>;
 };
 
 export default function CompoundLayout({ children, className }) {
-    return (
-        <div className={className}>
-            {children}
-        </div>
-    );
+  return <div className={className}>{children}</div>;
 }
 
-CompoundLayout.Left = Left;
-CompoundLayout.Middle = Middle;
-CompoundLayout.Right = Right;
+CompoundLayout.Column = Column;
+CompoundLayout.Row = Row;

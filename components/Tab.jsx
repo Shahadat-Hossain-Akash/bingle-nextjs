@@ -23,7 +23,7 @@ const categories = [
 
 export default function Tab() {
     return (
-        <div className="flex w-full justify-center h-full overflow-hidden">
+        <div className="flex w-full justify-center h-full overflow-hidden text-white">
             <div className="w-full max-w-md">
                 <TabGroup>
                     <TabList className="flex gap-4">

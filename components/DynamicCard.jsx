@@ -11,10 +11,10 @@ export default function DynamicCard({ title = '', icons = [], showSearchBar = fa
 		<CompoundCard className="w-full flex flex-col gap-2 h-fit">
 			<CompoundCard.Stack className="w-full h-fit flex">
 				<CompoundLayout className="w-full h-full flex flex-row justify-between items-center">
-					<CompoundLayout.Left className="w-full h-full">
+					<CompoundLayout.Column className="h-full">
 						<span className="text-xl md:text-3xl">{title}</span>
-					</CompoundLayout.Left>
-					<CompoundLayout.Right className="w-full flex h-fit flex-row justify-end gap-2">
+					</CompoundLayout.Column>
+					<CompoundLayout.Column className="flex h-fit flex-row justify-end gap-2">
 						{icons.map((el) => (
 							<button onClick={el && el?.onClick} className={el.style} key={el?.icon}>
 								{el?.icon.map((ic) => (
@@ -29,7 +29,7 @@ export default function DynamicCard({ title = '', icons = [], showSearchBar = fa
 							</button>
 						))}
 						{component?.map((el) => el.component())}
-					</CompoundLayout.Right>
+					</CompoundLayout.Column>
 				</CompoundLayout>
 			</CompoundCard.Stack>
 			{showSearchBar && (
