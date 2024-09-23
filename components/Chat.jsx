@@ -1,135 +1,47 @@
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import useWebSocket from "react-use-websocket";
 
-const messages = [
-    {
-        id: 1,
-        sender: "John Doe",
-        avatar: "/assets/avatar1.svg",
-        content: "Lorem ipsum dolor sit amet consectetur. Cursus urna turpis enim justo. Sit at " +
-                "sit molestie purus pharetra venenatis elementum ipsum. Mi varius diam a blandi" +
-                "t amet porta non. Vitae urna amet condimentum tellus amet dignissim turpis urn" +
-                "a vehicula.",
-        timestamp: "10:45 AM",
-        type: "incoming"
-    }, {
-        id: 2,
-        sender: "You",
-        avatar: "/assets/avatar2.svg",
-        content: "I’m good, thanks! How about you?",
-        timestamp: "10:47 AM",
-        type: "outgoing"
-    }, {
-        id: 3,
-        sender: "John Doe",
-        avatar: "/assets/avatar1.svg",
-        content: "I’m doing well, just working on some projects.",
-        timestamp: "10:50 AM",
-        type: "incoming"
-    },
-        {
-        id: 1,
-        sender: "John Doe",
-        avatar: "/assets/avatar1.svg",
-        content: "Lorem ipsum dolor sit amet consectetur. Cursus urna turpis enim justo. Sit at " +
-                "sit molestie purus pharetra venenatis elementum ipsum. Mi varius diam a blandi" +
-                "t amet porta non. Vitae urna amet condimentum tellus amet dignissim turpis urn" +
-                "a vehicula.",
-        timestamp: "10:45 AM",
-        type: "incoming"
-    }, {
-        id: 2,
-        sender: "You",
-        avatar: "/assets/avatar2.svg",
-        content: "I’m good, thanks! How about you?",
-        timestamp: "10:47 AM",
-        type: "outgoing"
-    }, {
-        id: 3,
-        sender: "John Doe",
-        avatar: "/assets/avatar1.svg",
-        content: "I’m doing well, just working on some projects.",
-        timestamp: "10:50 AM",
-        type: "incoming"
-    },
-        {
-        id: 1,
-        sender: "John Doe",
-        avatar: "/assets/avatar1.svg",
-        content: "Lorem ipsum dolor sit amet consectetur. Cursus urna turpis enim justo. Sit at " +
-                "sit molestie purus pharetra venenatis elementum ipsum. Mi varius diam a blandi" +
-                "t amet porta non. Vitae urna amet condimentum tellus amet dignissim turpis urn" +
-                "a vehicula.",
-        timestamp: "10:45 AM",
-        type: "incoming"
-    }, {
-        id: 2,
-        sender: "You",
-        avatar: "/assets/avatar2.svg",
-        content: "I’m good, thanks! How about you?",
-        timestamp: "10:47 AM",
-        type: "outgoing"
-    }, {
-        id: 3,
-        sender: "John Doe",
-        avatar: "/assets/avatar1.svg",
-        content: "I’m doing well, just working on some projects.",
-        timestamp: "10:50 AM",
-        type: "incoming"
-    },
-        {
-        id: 1,
-        sender: "John Doe",
-        avatar: "/assets/avatar1.svg",
-        content: "Lorem ipsum dolor sit amet consectetur. Cursus urna turpis enim justo. Sit at " +
-                "sit molestie purus pharetra venenatis elementum ipsum. Mi varius diam a blandi" +
-                "t amet porta non. Vitae urna amet condimentum tellus amet dignissim turpis urn" +
-                "a vehicula.",
-        timestamp: "10:45 AM",
-        type: "incoming"
-    }, {
-        id: 2,
-        sender: "You",
-        avatar: "/assets/avatar2.svg",
-        content: "I’m good, thanks! How about you?",
-        timestamp: "10:47 AM",
-        type: "outgoing"
-    }, {
-        id: 3,
-        sender: "John Doe",
-        avatar: "/assets/avatar1.svg",
-        content: "I’m doing well, just working on some projects.",
-        timestamp: "10:50 AM",
-        type: "incoming"
-    },
-        {
-        id: 1,
-        sender: "John Doe",
-        avatar: "/assets/avatar1.svg",
-        content: "Lorem ipsum dolor sit amet consectetur. Cursus urna turpis enim justo. Sit at " +
-                "sit molestie purus pharetra venenatis elementum ipsum. Mi varius diam a blandi" +
-                "t amet porta non. Vitae urna amet condimentum tellus amet dignissim turpis urn" +
-                "a vehicula.",
-        timestamp: "10:45 AM",
-        type: "incoming"
-    }, {
-        id: 2,
-        sender: "You",
-        avatar: "/assets/avatar2.svg",
-        content: "I’m good, thanks! How about you?",
-        timestamp: "10:47 AM",
-        type: "outgoing"
-    }, {
-        id: 3,
-        sender: "John Doe",
-        avatar: "/assets/avatar1.svg",
-        content: "I’m doing well, just working on some projects.",
-        timestamp: "10:50 AM",
-        type: "incoming"
-    }
-];
+const socketURL = "ws://127.0.0.1:8000/ws/test"
 
 export default function Chat() {
+  const [messages, setMessages] = useState([])
+
+  const {register,reset,handleSubmit} = useForm()
+
+  const {sendJsonMessage} = useWebSocket(socketURL, {
+    onOpen: () => {
+      console.log("open")
+    },
+    onError: () => {
+      console.log("error")
+    },
+    onClose: () => {
+      console.log("close")
+    },
+    onMessage: (msg) => {
+      console.log(JSON.parse(msg.data));
+        const data = JSON.parse(msg.data)
+        setMessages((prev) => [...prev, data])
+    }
+  });
+
+    const onSubmit = (data) => {
+      const message = {
+        id: new Date().getTime(),
+        sender: "You",
+        avatar: "/assets/avatar2.svg",
+        content: data.message,
+        timestamp: new Date().toLocaleTimeString(),
+        type: "outgoing",
+      };
+
+      sendJsonMessage({type:"message", message})
+      reset()
+    };
+    console.log(messages)
+
     return (
       <div className="flex h-[calc(100vh-72px)] antialiased text-white bg-transparent">
         <div className="flex flex-col flex-1 gap-2">
@@ -152,45 +64,49 @@ export default function Chat() {
 
           {/* Messages */}
           <div className="flex-1 p-4 overflow-y-auto scrollbar-none">
-            {messages.map((message) => (
+            {messages.map((data) => (
               <div
-                key={message.id}
+                key={data?.message.id}
                 className={`flex items-start gap-4 mb-4 ${
-                  message.type === "outgoing" ? "justify-end" : ""
+                  data?.message.type === "outgoing" ? "justify-end" : ""
                 }`}
               >
-                {message.type === "incoming" && (
+                {data?.message.type === "incoming" && (
                   <Image
-                    src={message.avatar}
+                    src={data?.message.avatar}
                     alt="Avatar"
                     className="w-10 h-10 rounded-full object-cover relative"
                     width={32}
                     height={32}
                   />
                 )}
-                <div className="flex flex-col gap-1">
+                <div className={`flex flex-col gap-1 ${
+                      data?.message.type === "incoming"
+                        ? ""
+                        : "items-end"
+                    }`}>
                   <div
-                    className={`p-3 rounded-2xl max-w-4xl ${
-                      message.type === "incoming"
+                    className={`p-2.5 rounded-2xl max-w-4xl w-fit ${
+                      data?.message.type === "incoming"
                         ? "bg-[#1C1D1F]"
                         : "bg-[#1A8DFF] text-white"
                     }`}
                   >
-                    <p className="text-sm">{message.content}</p>
+                    <p className="text-sm w-fit">{data?.message?.content}</p>
                   </div>
-                  {message.type === "incoming" ? (
+                  {data?.message.type === "incoming" ? (
                     <span className="text-xs text-gray-300 block text-left">
-                      {message.timestamp}
+                      {data?.message.timestamp}
                     </span>
                   ) : (
                     <span className="text-xs text-gray-300 block  text-right">
-                      {message.timestamp}
+                      {data?.message.timestamp}
                     </span>
                   )}
                 </div>
-                {message.type === "outgoing" && (
+                {data?.message.type === "outgoing" && (
                   <Image
-                    src={message.avatar}
+                    src={data?.message.avatar}
                     alt="Avatar"
                     className="w-10 h-10 rounded-full object-cover relative"
                     width={32}
@@ -203,16 +119,17 @@ export default function Chat() {
 
           {/* Message Input */}
           <div className="p-4 bg-[#9b9b9b]/5 rounded-2xl">
-            <div className="flex items-center">
+            <form className="flex items-center" onSubmit={handleSubmit(onSubmit)}>
               <input
+                {...register("message", {required: true})}
                 type="text"
                 placeholder="Type a message..."
                 className="flex-1 p-2 bg-transparent text-white rounded-lg focus:outline-none"
               />
-              <button className="ml-4 px-4 py-2 bg-[#1A8DFF] text-white rounded-xl">
+              <button type="submit" className="ml-4 px-4 py-2 bg-[#1A8DFF] text-white rounded-xl">
                 Send
               </button>
-            </div>
+            </form>
           </div>
         </div>
       </div>
