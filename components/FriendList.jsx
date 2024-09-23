@@ -55,7 +55,7 @@ export default function FriendList() {
         title="Friends"
         icons={friendIcons}
         component={components}
-        showSearchBar
+        showSearchBar={true}
       />
       <div className="overflow-y-scroll scrollbar-none mt-2 h-full flex flex-col gap-2">
         {friendList?.length > 0 ? (

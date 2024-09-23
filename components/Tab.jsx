@@ -23,28 +23,38 @@ const categories = [
 
 export default function Tab() {
     return (
-        <div className="flex w-full justify-center h-full overflow-hidden text-white">
-            <div className="w-full max-w-md">
-                <TabGroup>
-                    <TabList className="flex gap-4">
-                        {categories.map(({ name }) => (
-                            <TabComponent
-                                key={name}
-                                className="text-md rounded-full py-1 px-3 font-semibold text-white focus:outline-none data-[selected]:bg-[#0C0D0E]/30 data-[hover]:bg-white/5 data-[selected]:data-[hover]:bg-white/10 data-[focus]:outline-1 data-[focus]:outline-white"
-                            >
-                                {name}
-                            </TabComponent>
-                        ))}
-                    </TabList>
-                    <TabPanels className="mt-3">
-                        {categories.map(({ name, component }) => (
-                            <TabPanel key={name} className="rounded-xl h-[calc(100vh-(96px+16px))] overflow-hidden scrollbar-none px-2">
-                                    {component()}
-                            </TabPanel>
-                        ))}
-                    </TabPanels>
-                </TabGroup>
-            </div>
+      <div className="flex w-full justify-center h-full overflow-hidden text-white">
+        <div className="w-full max-w-md">
+          <TabGroup>
+            <TabList className="flex gap-4">
+              {categories.map(({ name }) => (
+                <TabComponent
+                  key={name}
+                  className={({ selected }) =>
+                    `text-md py-1 px-3 font-semibold focus:outline-none  
+                                    ${
+                                      selected
+                                        ? "border-b-[1px] border-white"
+                                        : ""
+                                    }`
+                  }
+                >
+                  {name}
+                </TabComponent>
+              ))}
+            </TabList>
+            <TabPanels className="mt-3">
+              {categories.map(({ name, component }) => (
+                <TabPanel
+                  key={name}
+                  className="rounded-xl h-[calc(100vh-(96px+16px))] overflow-hidden scrollbar-none px-2"
+                >
+                  {component()}
+                </TabPanel>
+              ))}
+            </TabPanels>
+          </TabGroup>
         </div>
-    )
+      </div>
+    );
 }

@@ -1,24 +1,26 @@
 'use client';
-import CompoundLayout from '@/components/compound/CompoundLayout';
-import DrawerComponent from '@/components/DrawerComponent';
-import DynamicComponent from '@/components/DynamicComponent';
-import FriendList from '@/components/FriendList';
 import Header from '@/components/Header';
 import HomePage from '@/components/HomePage';
-import List from '@/components/List';
-import Room from '@/components/Room';
-import Sidebar from '@/components/Sidebar';
 import useDeviceWidth from '@/hooks/useDeviceWidth';
-import Image from 'next/image';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {useState} from 'react';
+import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
+import { Provider } from "react-redux";
+import { store } from '@/store/store';
+
+
+const queryClient = new QueryClient()
 
 export default function Home() {
-    const {width} = useDeviceWidth();
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     return (
-      <main className="flex min-h-screen flex-col p-2 gap-2 text-white">
-        <Header />
-        <HomePage/>
-      </main>
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          <main className="flex min-h-screen flex-col p-2 gap-2 text-white">
+            <Header />
+            <HomePage />
+          </main>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </Provider>
     );
 }

@@ -1,7 +1,7 @@
-'use client'
+import React from "react";
 
-export default function DynamicComponent({render}) {
-    return (
-        render()
-    )
-}
+const DynamicComponent = ({ render: Component }) => {
+  return Component ? <Component /> : null;
+};
+
+export default DynamicComponent;

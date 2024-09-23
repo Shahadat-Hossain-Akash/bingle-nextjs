@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema } from '@/utils/form/schema';
 import { ClipLoader } from 'react-spinners';
 import Link from 'next/link';
+import { WavyBackground } from '@/components/ui/wavy-background';
 
 export default function Login() {
 	const {
@@ -26,7 +27,7 @@ export default function Login() {
 		}
 	};
 	return (
-		<div className="w-full h-screen justify-center items-center flex flex-col relative">
+		<WavyBackground backgroundFill={'#151618'} waveWidth={100} className="w-full h-screen justify-center items-center flex flex-col relative">
 			{/*			<Image
 				src={'/assets/gradient.svg'}
 				alt="logo"
@@ -77,6 +78,6 @@ export default function Login() {
 					</button>
 				</form>
 			</div>
-		</div>
+		</WavyBackground>
 	);
 }
