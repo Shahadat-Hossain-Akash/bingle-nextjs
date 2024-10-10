@@ -1,12 +1,17 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
 import useWebSocket from "react-use-websocket";
 
-const socketURL = "ws://127.0.0.1:8000/ws/test"
 
 export default function Chat() {
   const [messages, setMessages] = useState([])
+  const activeServer = useSelector((state) => state.server.activeServer);
+  const activeRoom = useSelector((state) => state.room.activeRoom);
+
+  const socketURL = activeRoom ? `ws://127.0.0.1:8000/${activeServer}/${activeRoom}` : null
+  console.log(activeServer, activeRoom)
 
   const {register,reset,handleSubmit} = useForm()
 

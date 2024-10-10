@@ -11,10 +11,12 @@ import APIController from "@/common/helpers/APIController";
 import {TABS} from "@/common/helpers/Utility";
 import {useDispatch, useSelector} from "react-redux";
 import {setActiveTab} from "@/store/tabSlice";
+import Room from "./Room";
 
 export default function HomePage() {
     const dispatch = useDispatch();
     const activeTab = useSelector((state) => state.tab.activeTab);
+    const activeServer = useSelector((state) => state.server.activeServer);
 
     const handleTabChange = (value) => {
         dispatch(setActiveTab(value));
@@ -45,7 +47,7 @@ export default function HomePage() {
                         onTabChange={handleTabChange}/>
                 </CompoundLayout.Column>
                 <CompoundLayout.Column className="h-full">
-                    <DynamicComponent render={activeComponent}/>
+                    {!!activeServer ? <Room/> : <DynamicComponent render={activeComponent}/>}
                 </CompoundLayout.Column>
                 <CompoundLayout.Column className="w-full h-full">
                     <Chat/>
