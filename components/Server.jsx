@@ -29,7 +29,7 @@ export default function Server() {
             .getServer()
             .then(({data}) => data)
     });
-    console.log(data)
+
     return (
         <div className="flex flex-col h-full overflow-hidden min-w-80 w-full">
             <DynamicCard

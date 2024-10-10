@@ -24,6 +24,10 @@ const APIController = {
         getServer: () => {
             const url = "/server/";
             return client.get(url);
+        },
+        getRoomByServer: (id) => {
+            const url = `/server/?id=${id}`
+            return client.get(url);
         }
     }
 };
